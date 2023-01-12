@@ -1,32 +1,46 @@
-## Content
-* [Target](#Target)
-* [Steps](#Steps)
-* [Final result](#Final-result)
-* [Output](#Output)
+# Проект Предсказание цены на недвижимость в Мадриде
+> На основе данных по объектам недвижимости за 2020 год необходимо построить модель для прогнозирования цен. В исходнах дыннах более 21000 объектов недвижимости.
 
-## Target
-**Train the model to predict the final price of each home.**
+## Содержание
+* [Цель](#Цель)
+* [Последовательность действий](#Последовательность-действий)
+* [Использованные библиотеки](#Использованные-библиотеки)
+* [Итоговый результат](#Итоговый-результат)
+* [Вывод](#Вывод)
 
-## Steps
-- pre-processing is done (duplicates, missing values, types of data)
-- Models were trained and predicted with default parameters and additionally using different sets of hyperparameters.
-- the best model was selected based on the results of the RMSE metric
+## Цель
+**обучить модель для определения рыночной недвижимости в Мадриде.**
 
-## Final result
-| Regressors          | RMSE_mean | RMSE_std |
-|---------------------|:---------:|:--------:|
-| Linear_Reg.         |  0.134931 | 0.031700 |
-| Bayesian_Ridge_Reg. |  0.125599 | 0.024922 |
-| LGBM_Reg.           |  0.131588 | 0.020140 |
-| SVR                 |  0.278757 | 0.022400 |
-| Dec_Tree_Reg.       |  0.205279 | 0.028678 |
-| Random_Forest_Reg.  |  0.139848 | 0.023283 |
-| XGB_Reg.            |  0.130372 | 0.018754 |
-| Grad_Boost_Reg.     |  0.128550 | 0.019008 |
-| Cat_Boost_Reg.      |  0.118256 | 0.018838 |
-| Stacked_Reg.        |  0.118947 | 0.020697 |
+Критерии выбора модели: 
+* качество - Средняя абсолютная ошибка (MAE)
 
-## Conclusion
-The best model Cat Boost.
-On test get 0.12
-Top 13% submission
+## Последовательность действий
+- обработаны аномалии, связанные с выбросами
+- удалены признаки, не влияющие на цену или с большим количеством пропусков
+- заполнены пропуски
+- удалены дубликаты
+- проведен анализ признаков
+- с помощью кросс-валидации выбрана лучшая модель и проведен поиск оптимальных параметров
+- определены гиперпараметры с помощью Optuna для лучшей модели.
+
+## Использованные библиотеки
+- Модели: Linear Regression, Bayesian Ridge Regression, LightGBM,SVR,Decision Tree_Regression, RandomForest, XGB_Regression, Grad Boost_Regression,Cat Boost
+- matplotlib, seaborn, pandas, sklearn, plotly, OrdinalEncoder, RepeatedKFold, optuna
+
+## Итоговый результат
+|    **Regressors**   |  **MAE_mean** | **MAE_std** |
+|:-------------------:|:-------------:|:-----------:|
+|    Cat_Boost_Reg.   |  4335.353455  |   5.372060  |
+|     Stacked_Reg.    |  4716.981345  |  121.375667 |
+|  Random_Forest_Reg. |  4776.557785  |  165.222691 |
+|      LGBM_Reg.      |  7281.114508  |  106.146876 |
+|    Dec_Tree_Reg.    |  10183.225245 |  127.362954 |
+|   Grad_Boost_Reg.   |  13084.561745 |  218.191297 |
+|       XGB_Reg.      |  13244.717444 |  507.296831 |
+| Bayesian_Ridge_Reg. |  62895.141966 |  866.716260 |
+|     Linear_Reg.     |  62929.463422 |  854.038449 |
+|         SVR         | 258438.320084 | 4623.611286 |
+
+## Вывод
+Исходя из этого общая рекомендация:
+В качестве использования модели для предсказания цен на недвижимость рекомендуется выбрать CatBoostRegressor с подобранными гиперпараметрами.
